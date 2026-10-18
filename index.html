@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6558d3">
+
+  <title>Study Saathi AI</title>
+
+  <style>
+    :root {
+      --primary: #6558d3;
+      --secondary: #eeeaff;
+      --background: #f6f5fc;
+      --surface: #ffffff;
+      --text: #25233a;
+      --muted: #77758a;
+      --border: #e8e5f2;
+      --success: #21865b;
+      --danger: #c74355;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, Arial, sans-serif;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--surface);
+      padding: 18px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 23px;
+      color: var(--primary);
+    }
+
+    header p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    .hero {
+      padding: 22px;
+      border-radius: 20px;
+      color: white;
+      background: linear-gradient(135deg, #6558d3, #a18cf4);
+      margin-bottom: 18px;
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+    }
+
+    .hero p {
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      min-width: 0;
+    }
+
+    .card h2, .card h3 {
+      margin-top: 0;
+    }
+
+    .card h2 {
+      font-size: 19px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 13px;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      margin: 3px 2px 3px 0;
+    }
+
+    button.secondary {
+      background: var(--secondary);
+      color: var(--primary);
+    }
+
+    button.danger {
+      background: var(--danger);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 11px;
+      margin: 5px 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 5px 0 12px;
+      margin-bottom: 8px;
+    }
+
+    .tabs button {
+      flex-shrink: 0;
+    }
+
+    .tabs button.active {
+      background: #393078;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .clock {
+      font-size: 34px;
+      font-weight: 750;
+      text-align: center;
+      margin: 15px 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chat-box {
+      height: 280px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      background: #fbfaff;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .message {
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin: 8px 0;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message.user {
+      background: var(--secondary);
+      margin-left: 18px;
+    }
+
+    .message.bot {
+      background: white;
+      border: 1px solid var(--border);
+      margin-right: 18px;
+    }
+
+    .item {
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 10px;
+      margin: 8px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .item strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .item small {
+      color: var(--muted);
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .row > * {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .status {
+      padding: 8px 10px;
+      background: var(--secondary);
+      border-radius: 10px;
+      font-size: 13px;
+      margin: 8px 0;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0;
+    }
+
+    .check-row input {
+      width: auto;
+      margin: 0;
+    }
+
+    footer {
+      padding: 25px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 11px;
+      }
+
+      .hero {
+        padding: 18px;
+      }
+
+      .clock {
+        font-size: 29px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>📚 Study Saathi AI</h1>
+  <p>पढ़ाई • अनुशासन • फोकस • मोटिवेशन</p>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <h2>तुम्हारा लक्ष्य तुम्हारा इंतज़ार कर रहा है! 🎯</h2>
+    <p>
+      बहाने कम, प्रयास ज़्यादा। आज का एक छोटा कदम
+      तुम्हें तुम्हारे लक्ष्य के करीब ले जा सकता है।
+    </p>
+  </section>
+
+  <nav class="tabs" aria-label="मुख्य सेक्शन">
+    <button class="active" data-page="home">🏠 Home</button>
+    <button data-page="chat">🤖 AI Chat</button>
+    <button data-page="planner">📅 Planner</button>
+    <button data-page="tools">⏱️ Timer</button>
+    <button data-page="materials">📂 Materials</button>
+    <button data-page="motivation">🔥 Motivation</button>
+  </nav>
+
+  <!-- HOME -->
+
+  <section id="home" class="page active">
+
+    <div class="grid">
+
+      <article class="card">
+        <h3>🕒 अभी का समय</h3>
+        <div class="clock" id="digitalClock">--:--:--</div>
+        <p class="muted">तुम्हारे डिवाइस का स्थानीय समय।</p>
+      </article>
+
+      <article class="card">
+        <h3>🎯 आज के लक्ष्य</h3>
+        <div id="goalSummary">अभी कोई लक्ष्य नहीं जोड़ा गया।</div>
+        <button onclick="showPage('planner')">
+          लक्ष्य बनाओ
+        </button>
+      </article>
+
+      <article class="card">
+        <h3>⏱️ फोकस टाइम</h3>
+        <p class="muted">Pomodoro या टाइमर से पढ़ाई शुरू करो।</p>
+        <button onclick="showPage('tools')">
+          पढ़ाई शुरू करो
+        </button>
+      </article>
+
+      <article class="card">
+        <h3>🔥 आज का मोटिवेशन</h3>
+        <p id="homeMotivation">
+          मन लगने का इंतज़ार मत करो।
+          पाँच मिनट से शुरुआत करो।
+        </p>
+        <button onclick="showPage('motivation')">
+          और मोटिवेशन
+        </button>
+      </article>
+
+    </div>
+
+    <div class="card">
+      <h2>🔔 Study Reminder</h2>
+
+      <label for="reminderTime">रिमाइंडर का समय</label>
+      <input id="reminderTime" type="time">
+
+      <button onclick="saveReminder()">समय सेव करो</button>
+      <button class="secondary" onclick="enableNotifications()">
+        नोटिफिकेशन चालू करो
+      </button>
+
+      <p class="muted" id="reminderStatus">
+        रिमाइंडर सेट नहीं है।
+      </p>
+
+      <p class="muted">
+        नोट: इस शुरुआती संस्करण में रिमाइंडर तभी जाँचे जाते हैं
+        जब पेज खुला हो। बैकग्राउंड या बंद ऐप में विश्वसनीय
+        नोटिफिकेशन के लिए बाद में अतिरिक्त सेटअप करना होगा।
+      </p>
+    </div>
+
+  </section>
+
+  <!-- AI CHAT -->
+
+  <section id="chat" class="page">
+
+    <div class="card">
+      <h2>🤖 Study Saathi Chat</h2>
+
+      <p class="muted">
+        यह अभी चैट का डेमो है। असली AI उत्तर देने के लिए
+        सुरक्षित बैकएंड कनेक्शन जोड़ना बाकी है।
+      </p>
+
+      <div id="chatMessages" class="chat-box" aria-live="polite">
+        <div class="message bot">
+          नमस्ते! आज तुम कौन-सा विषय पढ़ना चाहते हो?
+          बताओ, हम तुम्हारा पहला लक्ष्य तय करते हैं।
+        </div>
+      </div>
+
+      <label for="chatInput">अपना संदेश लिखो</label>
+      <textarea id="chatInput"
+        placeholder="जैसे: मुझे गणित समझाओ..."
+      ></textarea>
+
+      <div class="row">
+        <button onclick="sendMessage()">संदेश भेजो</button>
+        <button class="secondary" onclick="startVoiceInput()">
+          🎙️ बोलकर लिखो
+        </button>
+      </div>
+
+      <p class="muted" id="voiceStatus"></p>
+    </div>
+
+  </section>
+
+  <!-- PLANNER -->
+
+  <section id="planner" class="page">
+
+    <div class="card">
+      <h2>📅 Study Planner</h2>
+
+      <label for="goalSubject">विषय या टास्क</label>
+      <input id="goalSubject"
+        placeholder="जैसे: विज्ञान का अध्याय 2">
+
+      <div class="row">
+        <div>
+          <label for="goalDate">तारीख</label>
+          <input id="goalDate" type="date">
+        </div>
+
+        <div>
+          <label for="goalMinutes">समय (मिनट)</label>
+          <input id="goalMinutes" type="number"
+            min="1" max="1440" value="30">
+        </div>
+      </div>
+
+      <button onclick="addGoal()">+ लक्ष्य जोड़ो</button>
+
+      <h3>तुम्हारे लक्ष्य</h3>
+      <div id="goalList"></div>
+    </div>
+
+  </section>
+
+  <!-- TIMERS -->
+
+  <section id="tools" class="page">
+
+    <div class="card">
+      <h2>⏳ Countdown Timer</h2>
+
+      <div class="row">
+        <div>
+          <label for="timerMinutes">मिनट</label>
+          <input id="timerMinutes" type="number"
+            min="0" max="999" value="25">
+        </div>
+
+        <div>
+          <label for="timerSeconds">सेकंड</label>
+          <input id="timerSeconds" type="number"
+            min="0" max="59" value="0">
+        </div>
+      </div>
+
+      <div class="clock" id="timerDisplay">25:00</div>
+
+      <button onclick="startTimer()">Start</button>
+      <button class="secondary" onclick="pauseTimer()">Pause</button>
+      <button class="secondary" onclick="resetTimer()">Reset</button>
+
+      <p id="timerStatus" class="muted">टाइमर तैयार है।</p>
+    </div>
+
+    <div class="card">
+      <h2>⏱️ Stopwatch</h2>
+
+      <div class="clock" id="stopwatchDisplay">00:00.0</div>
+
+      <button onclick="startStopwatch()">Start</button>
+      <button class="secondary" onclick="pauseStopwatch()">Pause</button
