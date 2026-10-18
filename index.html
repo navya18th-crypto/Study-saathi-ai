@@ -1,109 +1,1884 @@
-from pathlib import Path
-
-html = r'''<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#6558d3">
-  <title>Study Saathi AI</title>
+
+  <title>Study साथी AI</title>
+
   <style>
-    :root{--primary:#6558d3;--secondary:#eeeaff;--background:#f6f5fc;--surface:#fff;--text:#25233a;--muted:#77758a;--border:#e8e5f2;--success:#21865b;--danger:#c74355}
-    *{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:var(--background);color:var(--text)}
-    header{background:var(--surface);padding:18px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
-    header h1{margin:0;font-size:23px;color:var(--primary)}header p{margin:5px 0 0;color:var(--muted);font-size:13px}
-    .container{max-width:950px;margin:auto;padding:16px}.hero{padding:22px;border-radius:20px;color:white;background:linear-gradient(135deg,#6558d3,#a18cf4);margin-bottom:18px}
-    .hero h2{margin:0 0 8px}.hero p{margin:0;line-height:1.6}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-    .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;min-width:0}
-    .card h2,.card h3{margin-top:0}.card h2{font-size:19px}.card h3{font-size:16px}.muted{color:var(--muted);font-size:13px;line-height:1.6}
-    button,input,textarea,select{font:inherit}button{border:0;border-radius:10px;padding:10px 13px;background:var(--primary);color:white;cursor:pointer;margin:3px 2px 3px 0}
-    button.secondary{background:var(--secondary);color:var(--primary)}button.danger{background:var(--danger)}button:disabled{opacity:.5;cursor:not-allowed}
-    input,textarea,select{width:100%;padding:11px;margin:5px 0 10px;border:1px solid var(--border);border-radius:10px;background:white;color:var(--text)}
-    textarea{min-height:90px;resize:vertical}label{display:block;font-size:14px;font-weight:600}.tabs{display:flex;gap:8px;overflow-x:auto;padding:5px 0 12px;margin-bottom:8px}
-    .tabs button{flex-shrink:0}.tabs button.active{background:#393078}.page{display:none}.page.active{display:block}
-    .clock{font-size:34px;font-weight:750;text-align:center;margin:15px 0;font-variant-numeric:tabular-nums}
-    .chat-box{height:280px;overflow-y:auto;border:1px solid var(--border);background:#fbfaff;padding:12px;border-radius:12px;margin-bottom:12px}
-    .message{padding:10px 12px;border-radius:12px;margin:8px 0;line-height:1.5;overflow-wrap:anywhere}.message.user{background:var(--secondary);margin-left:18px}.message.bot{background:white;border:1px solid var(--border);margin-right:18px}
-    .item{border:1px solid var(--border);padding:12px;border-radius:10px;margin:8px 0;overflow-wrap:anywhere}.item strong{display:block;margin-bottom:5px}.item small{color:var(--muted)}
-    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1;min-width:0}.status{padding:8px 10px;background:var(--secondary);border-radius:10px;font-size:13px;margin:8px 0}
-    .check-row{display:flex;align-items:center;gap:8px;margin:8px 0}.check-row input{width:auto;margin:0}footer{padding:25px;text-align:center;color:var(--muted);font-size:12px}
-    @media(max-width:520px){.grid{grid-template-columns:1fr}.container{padding:11px}.hero{padding:18px}.clock{font-size:29px}}
+    /* =========================
+       PART 1: BASIC HTML LAYOUT
+       ========================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+
+    /* HEADER */
+
+    header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #111827;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    header h1 {
+      font-size: 22px;
+      margin: 0;
+      color: #38bdf8;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    /* NAVIGATION */
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      background: transparent;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      padding: 9px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    nav button:hover,
+    nav button.active {
+      background: #2563eb;
+      border-color: #2563eb;
+    }
+
+    /* MAIN CONTAINER */
+
+    main {
+      padding: 18px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section {
+      display: none;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    /* CARDS */
+
+    .card {
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      padding: 18px;
+      margin: 14px 0;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(220px, 1fr)
+      );
+    }
+
+    /* BUTTONS */
+
+    .btn {
+      padding: 10px 14px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+
+    /* TEXT */
+
+    .muted {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .welcome {
+      background: linear-gradient(
+        135deg,
+        #172554,
+        #111827
+      );
+      border: 1px solid #1d4ed8;
+      padding: 24px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+
+    .welcome h2 {
+      color: #7dd3fc;
+      margin-top: 0;
+    }
+
+    .feature-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    /* INPUTS */
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #e2e8f0;
+      font: inherit;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: 2px solid #38bdf8;
+    }
+
+    /* FOOTER */
+
+    footer {
+      text-align: center;
+      padding: 22px 12px;
+      color: #64748b;
+      font-size: 13px;
+      border-top: 1px solid #1e293b;
+      margin-top: 30px;
+    }
+
+    /* MOBILE RESPONSIVE */
+
+    @media (max-width: 600px) {
+      header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        width: 100%;
+      }
+
+      nav button {
+        flex: 1 1 auto;
+      }
+
+      main {
+        padding: 12px;
+      }
+
+      .welcome {
+        padding: 18px;
+      }
+    }
   </style>
 </head>
+
 <body>
-<header><h1>📚 Study Saathi AI</h1><p data-i18n="tagline">Study • Discipline • Focus • Motivation</p></header>
-<main class="container">
-  <section class="hero"><h2 data-i18n="heroTitle">Your goals are waiting for you! 🎯</h2><p data-i18n="heroText">Fewer excuses, more effort. One small step today can bring you closer to your goal.</p></section>
-  <nav class="tabs" aria-label="Main sections">
-    <button class="active" data-page="home" data-i18n="navHome">🏠 Home</button><button data-page="chat" data-i18n="navChat">🤖 AI Chat</button>
-    <button data-page="planner" data-i18n="navPlanner">📅 Planner</button><button data-page="tools" data-i18n="navTools">⏱️ Timer</button>
-    <button data-page="materials" data-i18n="navMaterials">📂 Materials</button><button data-page="motivation" data-i18n="navMotivation">🔥 Motivation</button>
-    <button data-page="settings" data-i18n="navSettings">⚙️ Settings</button>
-  </nav>
-  <section id="home" class="page active"><div class="grid">
-    <article class="card"><h3 data-i18n="currentTime">🕒 Current time</h3><div class="clock" id="digitalClock">--:--:--</div><p class="muted" data-i18n="localTime">Your device's local time.</p></article>
-    <article class="card"><h3 data-i18n="todayGoals">🎯 Today's goals</h3><div id="goalSummary" data-i18n="noGoals">No goals added yet.</div><button onclick="showPage('planner')" data-i18n="makeGoal">Create a goal</button></article>
-    <article class="card"><h3 data-i18n="focusTime">⏱️ Focus time</h3><p class="muted" data-i18n="focusText">Start studying with the timer.</p><button onclick="showPage('tools')" data-i18n="startStudying">Start studying</button></article>
-    <article class="card"><h3 data-i18n="todayMotivation">🔥 Today's motivation</h3><p id="homeMotivation" data-i18n="motivationQuote">Don't wait to feel motivated. Start with five minutes.</p><button onclick="showPage('motivation')" data-i18n="moreMotivation">More motivation</button></article>
-  </div>
-  <div class="card"><h2 data-i18n="studyReminder">🔔 Study Reminder</h2><label for="reminderTime" data-i18n="reminderTime">Reminder time</label><input id="reminderTime" type="time">
-    <button onclick="saveReminder()" data-i18n="saveTime">Save time</button><button class="secondary" onclick="enableNotifications()" data-i18n="enableNotifications">Enable notifications</button>
-    <p class="muted" id="reminderStatus" data-i18n="reminderNotSet">No reminder set.</p><p class="muted" data-i18n="reminderNote">Note: reminders are checked only while this page is open. Reliable notifications when the page is closed require additional setup.</p>
-  </div></section>
-  <section id="chat" class="page"><div class="card"><h2 data-i18n="chatTitle">🤖 Study Saathi Chat</h2><p class="muted" data-i18n="chatDemo">This is a local demo chat. A secure backend connection is required for real AI answers.</p>
-    <div id="chatMessages" class="chat-box" aria-live="polite"><div class="message bot" data-i18n="chatWelcome">Hello! Which subject would you like to study today? Tell me and we can set your first goal.</div></div>
-    <label for="chatInput" data-i18n="yourMessage">Write your message</label><textarea id="chatInput" data-i18n-placeholder="chatPlaceholder" placeholder="For example: Explain mathematics to me..."></textarea>
-    <div class="row"><button onclick="sendMessage()" data-i18n="sendMessage">Send message</button><button class="secondary" onclick="startVoiceInput()" data-i18n="voiceInput">🎙️ Speak to type</button></div><p class="muted" id="voiceStatus"></p>
-  </div></section>
-  <section id="planner" class="page"><div class="card"><h2 data-i18n="plannerTitle">📅 Study Planner</h2><label for="goalSubject" data-i18n="taskSubject">Subject or task</label><input id="goalSubject" data-i18n-placeholder="taskPlaceholder" placeholder="For example: Science chapter 2">
-    <div class="row"><div><label for="goalDate" data-i18n="date">Date</label><input id="goalDate" type="date"></div><div><label for="goalMinutes" data-i18n="minutes">Time (minutes)</label><input id="goalMinutes" type="number" min="1" max="1440" value="30"></div></div>
-    <button onclick="addGoal()" data-i18n="addGoal">+ Add goal</button><h3 data-i18n="yourGoals">Your goals</h3><div id="goalList"></div></div></section>
-  <section id="tools" class="page"><div class="card"><h2 data-i18n="countdown">⏳ Countdown Timer</h2><div class="row"><div><label for="timerMinutes" data-i18n="minutes">Minutes</label><input id="timerMinutes" type="number" min="0" max="999" value="25"></div><div><label for="timerSeconds" data-i18n="seconds">Seconds</label><input id="timerSeconds" type="number" min="0" max="59" value="0"></div></div>
-    <div class="clock" id="timerDisplay">25:00</div><button onclick="startTimer()" data-i18n="start">Start</button><button class="secondary" onclick="pauseTimer()" data-i18n="pause">Pause</button><button class="secondary" onclick="resetTimer()" data-i18n="reset">Reset</button><p id="timerStatus" class="muted" data-i18n="timerReady">Timer is ready.</p></div>
-    <div class="card"><h2 data-i18n="stopwatch">⏱️ Stopwatch</h2><div class="clock" id="stopwatchDisplay">00:00.0</div><button onclick="startStopwatch()" data-i18n="start">Start</button><button class="secondary" onclick="pauseStopwatch()" data-i18n="pause">Pause</button><button class="secondary" onclick="resetStopwatch()" data-i18n="reset">Reset</button></div></section>
-  <section id="materials" class="page"><div class="card"><h2 data-i18n="materialsTitle">📂 Study Materials</h2><p class="muted" data-i18n="materialsText">Save your own notes, links, or resource names on this device.</p>
-    <label for="materialTitle" data-i18n="materialName">Material name</label><input id="materialTitle" data-i18n-placeholder="materialPlaceholder" placeholder="e.g. Chemistry notes">
-    <label for="materialLink" data-i18n="materialLink">Link or notes</label><textarea id="materialLink" data-i18n-placeholder="materialLinkPlaceholder" placeholder="Paste a URL or type a short note"></textarea>
-    <button onclick="addMaterial()" data-i18n="addMaterial">+ Add material</button><div id="materialList"></div></div></section>
-  <section id="motivation" class="page"><div class="card"><h2 data-i18n="motivationTitle">🔥 Motivation</h2><p id="motivationText" data-i18n="motivationQuote">Don't wait to feel motivated. Start with five minutes.</p><button onclick="newMotivation()" data-i18n="newQuote">Show another quote</button></div></section>
-  <section id="settings" class="page"><div class="card"><h2 data-i18n="settingsTitle">⚙️ Settings</h2><label for="languageSelect" data-i18n="language">Language</label><select id="languageSelect" onchange="setLanguage(this.value)"><option value="en">English</option><option value="hi">हिन्दी (Hindi)</option></select><p class="muted" data-i18n="languageNote">Choose the language used for menus, buttons, and supported text.</p></div></section>
-</main><footer data-i18n="footer">Study Saathi AI • Keep learning, one step at a time.</footer>
-<script>
-const translations = {
-en:{
-tagline:"Study • Discipline • Focus • Motivation",heroTitle:"Your goals are waiting for you! 🎯",heroText:"Fewer excuses, more effort. One small step today can bring you closer to your goal.",
-navHome:"🏠 Home",navChat:"🤖 AI Chat",navPlanner:"📅 Planner",navTools:"⏱️ Timer",navMaterials:"📂 Materials",navMotivation:"🔥 Motivation",navSettings:"⚙️ Settings",
-currentTime:"🕒 Current time",localTime:"Your device's local time.",todayGoals:"🎯 Today's goals",noGoals:"No goals added yet.",makeGoal:"Create a goal",focusTime:"⏱️ Focus time",focusText:"Start studying with the timer.",startStudying:"Start studying",todayMotivation:"🔥 Today's motivation",motivationQuote:"Don't wait to feel motivated. Start with five minutes.",moreMotivation:"More motivation",
-studyReminder:"🔔 Study Reminder",reminderTime:"Reminder time",saveTime:"Save time",enableNotifications:"Enable notifications",reminderNotSet:"No reminder set.",reminderNote:"Note: reminders are checked only while this page is open. Reliable notifications when the page is closed require additional setup.",
-chatTitle:"🤖 Study Saathi Chat",chatDemo:"This is a local demo chat. A secure backend connection is required for real AI answers.",chatWelcome:"Hello! Which subject would you like to study today? Tell me and we can set your first goal.",yourMessage:"Write your message",chatPlaceholder:"For example: Explain mathematics to me...",sendMessage:"Send message",voiceInput:"🎙️ Speak to type",
-plannerTitle:"📅 Study Planner",taskSubject:"Subject or task",taskPlaceholder:"For example: Science chapter 2",date:"Date",minutes:"Time (minutes)",addGoal:"+ Add goal",yourGoals:"Your goals",countdown:"⏳ Countdown Timer",seconds:"Seconds",start:"Start",pause:"Pause",reset:"Reset",timerReady:"Timer is ready.",stopwatch:"⏱️ Stopwatch",
-materialsTitle:"📂 Study Materials",materialsText:"Save your own notes, links, or resource names on this device.",materialName:"Material name",materialPlaceholder:"e.g. Chemistry notes",materialLink:"Link or notes",materialLinkPlaceholder:"Paste a URL or type a short note",addMaterial:"+ Add material",
-motivationTitle:"🔥 Motivation",newQuote:"Show another quote",settingsTitle:"⚙️ Settings",language:"Language",languageNote:"Choose the language used for menus, buttons, and supported text.",footer:"Study Saathi AI • Keep learning, one step at a time.",
-goalAdded:"Goal added.",enterTask:"Please enter a subject or task.",delete:"Delete",complete:"Complete",completed:"Completed",notCompleted:"Not completed",materialAdded:"Material added.",enterMaterial:"Please enter a material name.",timerFinished:"Time is up! Great work.",timerRunning:"Timer running.",timerPaused:"Timer paused.",timerReset:"Timer reset.",reminderSaved:"Reminder saved for",notificationUnsupported:"Notifications are not supported in this browser.",notificationPermission:"Notification permission:",notificationEnabled:"Notifications enabled.",reminderDue:"Time to study!",chatDemoReply:"I’m currently a demo assistant, so I can’t generate real AI answers yet. You can add a goal in Study Planner. To enable AI responses, connect a secure backend—never put an API key in this HTML file.",voiceUnsupported:"Voice input is not supported in this browser.",listening:"Listening… please speak.",quote2:"Progress matters more than perfection.",quote3:"Small consistent steps create big results.",quote4:"Focus on what you can do today.",quote5:"Your future is built by what you do now."
-},
-hi:{
-tagline:"पढ़ाई • अनुशासन • फोकस • मोटिवेशन",heroTitle:"तुम्हारा लक्ष्य तुम्हारा इंतज़ार कर रहा है! 🎯",heroText:"बहाने कम, प्रयास ज़्यादा। आज का एक छोटा कदम तुम्हें लक्ष्य के करीब ले जा सकता है।",
-navHome:"🏠 होम",navChat:"🤖 AI चैट",navPlanner:"📅 प्लानर",navTools:"⏱️ टाइमर",navMaterials:"📂 सामग्री",navMotivation:"🔥 मोटिवेशन",navSettings:"⚙️ सेटिंग्स",
-currentTime:"🕒 अभी का समय",localTime:"तुम्हारे डिवाइस का स्थानीय समय।",todayGoals:"🎯 आज के लक्ष्य",noGoals:"अभी कोई लक्ष्य नहीं जोड़ा गया।",makeGoal:"लक्ष्य बनाओ",focusTime:"⏱️ फोकस टाइम",focusText:"टाइमर से पढ़ाई शुरू करो।",startStudying:"पढ़ाई शुरू करो",todayMotivation:"🔥 आज का मोटिवेशन",motivationQuote:"मोटिवेशन का इंतज़ार मत करो। पाँच मिनट से शुरुआत करो।",moreMotivation:"और मोटिवेशन",
-studyReminder:"🔔 पढ़ाई का रिमाइंडर",reminderTime:"रिमाइंडर का समय",saveTime:"समय सेव करो",enableNotifications:"नोटिफिकेशन चालू करो",reminderNotSet:"रिमाइंडर सेट नहीं है।",reminderNote:"ध्यान दें: रिमाइंडर तभी जाँचे जाते हैं जब यह पेज खुला हो। पेज बंद होने पर भरोसेमंद नोटिफिकेशन के लिए अतिरिक्त सेटअप चाहिए।",
-chatTitle:"🤖 स्टडी साथी चैट",chatDemo:"यह चैट अभी डेमो है। असली AI जवाबों के लिए सुरक्षित बैकएंड कनेक्शन ज़रूरी है।",chatWelcome:"नमस्ते! आज तुम कौन-सा विषय पढ़ना चाहते हो? बताओ, हम पहला लक्ष्य तय कर सकते हैं।",yourMessage:"अपना संदेश लिखो",chatPlaceholder:"जैसे: मुझे गणित समझाओ...",sendMessage:"संदेश भेजो",voiceInput:"🎙️ बोलकर लिखो",
-plannerTitle:"📅 स्टडी प्लानर",taskSubject:"विषय या काम",taskPlaceholder:"जैसे: विज्ञान का अध्याय 2",date:"तारीख",minutes:"समय (मिनट)",addGoal:"+ लक्ष्य जोड़ो",yourGoals:"तुम्हारे लक्ष्य",countdown:"⏳ काउंटडाउन टाइमर",seconds:"सेकंड",start:"शुरू",pause:"रोकें",reset:"रीसेट",timerReady:"टाइमर तैयार है।",stopwatch:"⏱️ स्टॉपवॉच",
-materialsTitle:"📂 पढ़ाई की सामग्री",materialsText:"अपने नोट्स, लिंक या सामग्री के नाम इस डिवाइस पर सेव करो।",materialName:"सामग्री का नाम",materialPlaceholder:"जैसे: केमिस्ट्री नोट्स",materialLink:"लिंक या नोट्स",materialLinkPlaceholder:"URL डालो या छोटा नोट लिखो",addMaterial:"+ सामग्री जोड़ो",
-motivationTitle:"🔥 मोटिवेशन",newQuote:"दूसरा संदेश दिखाओ",settingsTitle:"⚙️ सेटिंग्स",language:"भाषा",languageNote:"मेन्यू, बटन और उपलब्ध टेक्स्ट की भाषा चुनो।",footer:"Study Saathi AI • हर दिन थोड़ा-थोड़ा सीखते रहो।",
-goalAdded:"लक्ष्य जोड़ दिया गया।",enterTask:"कृपया विषय या काम लिखो।",delete:"हटाएँ",complete:"पूरा हुआ",completed:"पूरा",notCompleted:"अभी पूरा नहीं हुआ",materialAdded:"सामग्री जोड़ दी गई।",enterMaterial:"कृपया सामग्री का नाम लिखो।",timerFinished:"समय पूरा हुआ! बहुत बढ़िया।",timerRunning:"टाइमर चल रहा है।",timerPaused:"टाइमर रोक दिया गया।",timerReset:"टाइमर रीसेट हो गया।",reminderSaved:"रिमाइंडर का समय सेव हुआ:",notificationUnsupported:"इस ब्राउज़र में नोटिफिकेशन उपलब्ध नहीं हैं।",notificationPermission:"नोटिफिकेशन की अनुमति:",notificationEnabled:"नोटिफिकेशन चालू हैं।",reminderDue:"पढ़ाई का समय हो गया है!",chatDemoReply:"मैं अभी डेमो असिस्टेंट हूँ, इसलिए असली AI जवाब नहीं दे सकता। तुम स्टडी प्लानर में लक्ष्य जोड़ सकते हो। AI जवाबों के लिए सुरक्षित बैकएंड जोड़ना होगा—इस HTML में API key कभी न डालें।",voiceUnsupported:"इस ब्राउज़र में वॉइस इनपुट उपलब्ध नहीं है।",listening:"सुन रहा हूँ… बोलिए।",quote2:"परफेक्शन से ज़्यादा प्रगति मायने रखती है।",quote3:"छोटे और नियमित कदम बड़े नतीजे लाते हैं।",quote4:"आज जो कर सकते हो, उस पर ध्यान दो।",quote5:"तुम्हारा भविष्य आज के कामों से बनता है।"
-}};
-let currentLanguage=localStorage.getItem("studySaathiLanguage")||"en";
-function t(key){return (translations[currentLanguage]&&translations[currentLanguage][key])||translations.en[key]||key}
-function setLanguage(lang){currentLanguage=translations[lang]?lang:"en";localStorage.setItem("studySaathiLanguage",currentLanguage);document.documentElement.lang=currentLanguage;
- document.querySelectorAll("[data-i18n]").forEach(el=>{const key=el.dataset.i18n;if(t(key))el.textContent=t(key)});
- document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{el.placeholder=t(el.dataset.i18nPlaceholder)});
- document.getElementById("languageSelect").value=currentLanguage;renderGoals();renderMaterials();updateReminderStatus();if(document.getElementById("timerStatus").dataset.key)document.getElementById("timerStatus").textContent=t(document.getElementById("timerStatus").dataset.key);
+
+  <!-- =========================
+       HEADER
+       ========================= -->
+
+  <header>
+    <div>
+      <h1>📚 Study साथी AI</h1>
+      <p>तेरा स्टडी पार्टनर, तेरी सफलता का साथी!</p>
+    </div>
+
+    <nav aria-label="मुख्य नेविगेशन">
+      <button class="active" data-section="dashboard">
+        🏠 Home
+      </button>
+
+      <button data-section="chat">
+        🤖 AI Chat
+      </button>
+
+      <button data-section="timer">
+        ⏱️ Timer
+      </button>
+
+      <button data-section="study">
+        📖 Study
+      </button>
+
+      <button data-section="motivation">
+        🔥 Motivation
+      </button>
+    </nav>
+  </header>
+
+  <!-- =========================
+       MAIN CONTENT
+       ========================= -->
+
+  <main>
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboard" class="active">
+
+      <div class="welcome">
+        <h2>भाई, स्वागत है तेरे Study साथी AI में! 💪</h2>
+
+        <p>
+          सपने बड़े हैं तो मेहनत भी बड़ी करनी पड़ेगी।
+          आज का दिन बर्बाद नहीं करना है।
+          एक लक्ष्य चुन और उसे पूरा करने में लग जा।
+        </p>
+
+        <p class="muted">
+          याद रख: रोज थोड़ा-थोड़ा पढ़ना भी बड़ी सफलता
+          की तरफ एक कदम है।
+        </p>
+
+        <button class="btn" data-go="chat">
+          AI साथी से बात करो
+        </button>
+      </div>
+
+      <h2>तुम्हारा स्टडी डैशबोर्ड</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <div class="feature-icon">🤖</div>
+          <h2>AI Study Partner</h2>
+
+          <p class="muted">
+            अपने AI साथी से बात करो, पढ़ाई का लक्ष्य
+            बनाओ और मोटिवेशन लो।
+          </p>
+
+          <button class="btn" data-go="chat">
+            Chat खोलो
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="feature-icon">⏱️</div>
+          <h2>Pomodoro Timer</h2>
+
+          <p class="muted">
+            25 मिनट पढ़ाई करो और फिर 5 मिनट का ब्रेक लो।
+            अपना फोकस बढ़ाओ।
+          </p>
+
+          <button class="btn" data-go="timer">
+            Timer खोलो
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="feature-icon">📖</div>
+          <h2>Study Section</h2>
+
+          <p class="muted">
+            अपनी पढ़ाई की सामग्री और किताबों को
+            व्यवस्थित रखने के लिए।
+          </p>
+
+          <button class="btn" data-go="study">
+            Study खोलो
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="feature-icon">🔥</div>
+          <h2>Motivation Zone</h2>
+
+          <p class="muted">
+            जब मन पढ़ाई से हटे, तब खुद को याद दिलाओ
+            कि तुमने शुरुआत क्यों की थी।
+          </p>
+
+          <button class="btn" data-go="motivation">
+            मोटिवेशन लो
+          </button>
+        </div>
+
+      </div>
+    </section>
+    <!-- AI CHAT SECTION -->
+
+    <section id="chat">
+
+      <div class="card">
+        <h2>🤖 Study साथी AI</h2>
+
+        <p class="muted">
+          यहाँ तुम अपने स्टडी पार्टनर से बात कर सकोगे।
+          वास्तविक AI बातचीत अगले पार्ट में जोड़ी जाएगी।
+        </p>
+
+        <div id="chatPlaceholder">
+          <p>
+            भाई, बता आज तेरा पढ़ाई का टार्गेट क्या है?
+          </p>
+        </div>
+
+        <!-- Chat interface will be added in Part 2 -->
+
+      </div>
+    </section>
+
+    <!-- TIMER SECTION -->
+
+    <section id="timer">
+
+      <div class="card">
+        <h2>⏱️ Study Timer</h2>
+
+        <p class="muted">
+          अपने समय का सही इस्तेमाल करो और ध्यान
+          भटकने से बचाओ।
+        </p>
+
+        <div class="grid">
+
+          <div class="card">
+            <h2>Pomodoro Timer</h2>
+            <p>25 मिनट पढ़ाई और 5 मिनट आराम।</p>
+            <p class="muted">
+              Timer के बटन और काम करने वाला सिस्टम
+              पार्ट 2 में जोड़ा जाएगा।
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>Stopwatch</h2>
+            <p>अपनी पढ़ाई का समय मापो।</p>
+            <p class="muted">
+              Stopwatch का काम करने वाला सिस्टम
+              पार्ट 2 में जोड़ा जाएगा।
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>Study Reminder</h2>
+            <p>समय पर पढ़ाई शुरू करने की याद दिलाने के लिए।</p>
+            <p class="muted">
+              Reminder का सिस्टम पार्ट 2 में जोड़ा जाएगा।
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- STUDY SECTION -->
+
+    <section id="study">
+
+      <div class="card">
+        <h2>📚 Study Library</h2>
+
+        <p class="muted">
+          यहाँ किताबें और पढ़ाई से संबंधित वीडियो
+          जोड़ने के लिए आगे फीचर्स बनाए जाएँगे।
+        </p>
+
+        <div class="grid">
+
+          <div class="card">
+            <h2>📕 Books Section</h2>
+
+            <p class="muted">
+              अपनी मोटिवेशनल किताबें अपलोड करने
+              और उनके आधार पर पढ़ाई में प्रेरणा पाने के लिए।
+            </p>
+
+            <input
+              type="file"
+              id="bookUpload"
+              accept=".pdf,.txt,.epub"
+              aria-label="किताब चुनें"
+            >
+
+            <p class="muted">
+              किताब पढ़ने और उसका विश्लेषण करने वाला
+              AI सिस्टम अगले पार्ट्स में जोड़ा जाएगा।
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>🎬 Video Section</h2>
+            <p class="muted">
+              अपनी प्रेरणादायक वीडियो चुनने के लिए।
+            </p>
+
+            <input
+              type="file"
+              id="videoUpload"
+              accept="video/*"
+              aria-label="वीडियो चुनें"
+            >
+
+            <p class="muted">
+              वीडियो के आधार पर AI मोटिवेशन और
+              विश्लेषण की सुविधा आगे जोड़ी जाएगी।
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- MOTIVATION SECTION -->
+
+    <section id="motivation">
+
+      <div class="card">
+        <h2>🔥 Motivation Zone</h2>
+
+        <p>
+          भाई, जिंदगी में कुछ बड़ा करना है तो
+          रोज मेहनत करनी पड़ेगी।
+        </p>
+
+        <p>
+          मन नहीं कर रहा? कोई बात नहीं।
+          मन का इंतजार मत कर। किताब खोल और
+          सिर्फ 10 मिनट पढ़ना शुरू कर।
+        </p>
+
+        <p>
+          याद रख: तेरा मुकाबला दूसरों से नहीं,
+          अपने कल वाले रूप से है।
+        </p>
+
+        <button class="btn" id="motivationButton">
+          मुझे मोटिवेट करो 💪
+        </button>
+
+        <p id="motivationMessage" class="muted">
+          चल भाई, अब अपना टार्गेट पूरा कर!
+        </p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- =========================
+       FOOTER
+       ========================= -->
+
+  <footer>
+    <p>© 2026 Study साथी AI</p>
+    <p>Focus • Discipline • Consistency</p>
+  </footer>
+
+  <!-- =========================
+       PART 1: BASIC NAVIGATION
+       ========================= -->
+
+  <script>
+    "use strict";
+
+    // सभी नेविगेशन बटन और सेक्शन चुनें
+    const navButtons = document.querySelectorAll(
+      "nav button[data-section]"
+    );
+
+    const sections = document.querySelectorAll(
+      "main section"
+    );
+
+    // किसी सेक्शन को खोलने का फंक्शन
+    function openSection(sectionId) {
+      const target = document.getElementById(sectionId);
+
+      if (!target || !target.matches("main section")) {
+        return;
+      }
+
+      sections.forEach(function(section) {
+        section.classList.toggle(
+          "active",
+          section.id === sectionId
+        );
+      });
+
+      navButtons.forEach(function(button) {
+        button.classList.toggle(
+          "active",
+          button.dataset.section === sectionId
+        );
+      });
+    }
+
+    // नेविगेशन बटन पर क्लिक
+    navButtons.forEach(function(button) {
+      button.addEventListener("click", function() {
+        openSection(button.dataset.section);
+      });
+    });
+
+    // कार्ड के अंदर दिए गए बटन से सेक्शन खोलें
+    document.querySelectorAll("[data-go]").forEach(
+      function(button) {
+        button.addEventListener("click", function() {
+          openSection(button.dataset.go);
+        });
+      }
+    );
+
+    // शुरुआती मोटिवेशन बटन
+    const motivationButton = document.getElementById(
+      "motivationButton"
+    );
+
+    const motivationMessage = document.getElementById(
+      "motivationMessage"
+    );
+
+    const motivationLines = [
+      "भाई, बहाने छोड़ और किताब खोल! 💪",
+      "तेरा भविष्य आज की मेहनत से बनेगा।",
+      "एक टास्क चुन, उसे पूरा कर और फिर अगला कदम उठा।",
+      "थक गया है तो छोटा ब्रेक ले, लेकिन हार मत मान।",
+      "अनुशासन बना, भाई। रोज की मेहनत ही असली ताकत है!"
+    ];
+    let motivationIndex = 0;
+
+    motivationButton.addEventListener("click", function() {
+      motivationMessage.textContent =
+        motivationLines[motivationIndex];
+
+      motivationIndex =
+        (motivationIndex + 1) % motivationLines.length;
+    });
+  </script>
+
+</body>
+</html>
+<!-- ======================================
+     STUDY SATHI AI - PART 2
+     CHAT, TIMER, STOPWATCH, REMINDER
+====================================== -->
+
+<style>
+.study-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  );
+  gap: 16px;
+  margin: 20px 0;
 }
-function showPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));}
-document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
-function safeLoad(key,fallback){try{return JSON.parse(localStorage.getItem(key))||fallback}catch{return fallback}}
-let goals=safeLoad("studySaathiGoals",[]),materials=safeLoad("studySaathiMaterials",[]);
-function saveGoals(){localStorage.setItem("studySaathiGoals",JSON.stringify(goals));renderGoals()}
-function addGoal(){const subject=document.getElementById("goalSubject").value.trim();if(!subject){alert(t("enterTask"));return}goals.push({id:Date.now(),subject,date:document.getElementById("goalDate").value,minutes:Math.max(1,Number(document.getElementById("goalMinutes").value)||30),done:false});document.getElementById("goalSubject").value="";saveGoals();alert(t("goalAdded"))}
-function renderGoals(){const list=document.getElementById("goalList"),summary=document.getElementById("goalSummary");list.replaceChildren();summary.textContent=goals.length?`${goals.filter(g=>g.done).length}/${goals.length} ${currentLanguage==="hi"?"लक्ष्य पूरे":"goals completed"}`:t("noGoals");
- goals.forEach(g=>{const item=document.createElement("div");item.className="item";const title=document.createElement("strong");title.textContent=g.subject;const small=document.createElement("small");small.textContent=`${g.date||"—"} • ${g.minutes} ${t("minutes")}`;const check=document.createElement("button");check.className="secondary";check.textContent=g.done?t("completed"):t("complete");check.onclick=()=>{g.done=!g.done;saveGoals()};const del=document.createElement("button");del.className="danger";del.textContent=t("delete");del.onclick=()=>{goals=goals.filter(x=>x.id!==g.id);saveGoals()};it
+
+.study-tool-card {
+  background: #111827;
+  color: #e2e8f0;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #334155;
+  min-width: 0;
+}
+
+.study-tool-card h2 {
+  color: #38bdf8;
+  font-size: 20px;
+  margin-top: 0;
+}
+
+.study-tool-card button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.study-tool-card button:hover {
+  background: #1d4ed8;
+}
+
+.study-tool-card input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px;
+  margin: 8px 0;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  background: #0f172a;
+  color: white;
+}
+
+.study-tool-card label {
+  display: block;
+  margin-top: 10px;
+}
+
+.study-timer {
+  font-size: 38px;
+  text-align: center;
+  font-weight: bold;
+  color: #38bdf8;
+  margin: 22px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.study-chat-box {
+  height: 220px;
+  overflow-y: auto;
+  background: #0f172a;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 12px 0;
+}
+
+.study-chat-message {
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.study-user-message {
+  background: #1e40af;
+  text-align: right;
+}
+
+.study-ai-message {
+  background: #1e293b;
+}
+  .study-note {
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.study-chat-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.study-chat-form input {
+  flex: 1 1 150px;
+  min-width: 0;
+}
+
+.study-status {
+  color: #7dd3fc;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+</style>
+
+<!-- STUDY TOOLS SECTION -->
+
+<section id="studyTools">
+
+  <div class="card">
+    <h2>🔥 Study साथी AI — Study Center</h2>
+
+    <p class="muted">
+      भाई, अब बहाने छोड़ और पढ़ाई पर ध्यान दे।
+      अपना लक्ष्य तय कर और काम शुरू कर!
+    </p>
+  </div>
+
+  <div class="study-tools-grid">
+
+    <!-- 1. STUDY CHAT -->
+
+    <div class="study-tool-card">
+
+      <h2>🤖 Study साथी AI</h2>
+
+      <p class="study-note">
+        अपने स्टडी पार्टनर से बात करो।
+      </p>
+
+      <div
+        id="studyChatMessages"
+        class="study-chat-box"
+        aria-live="polite"
+      >
+        <div class="study-chat-message study-ai-message">
+          भाई, आज का पढ़ाई का लक्ष्य क्या है?
+          सीधा लक्ष्य बता और उसे पूरा करने में लग जा! 💪
+        </div>
+      </div>
+
+      <form
+        id="studyChatForm"
+        class="study-chat-form"
+      >
+        <input
+          id="studyChatInput"
+          type="text"
+          placeholder="यहाँ मैसेज लिखो..."
+          autocomplete="off"
+          required
+        >
+
+        <button type="submit">भेजो</button>
+      </form>
+
+      <p class="study-note">
+        यह अभी डेमो चैट है। असली AI के लिए
+        सुरक्षित बैकएंड और AI API आवश्यक हैं।
+        </p>
+
+    </div>
+
+    <!-- 2. POMODORO TIMER -->
+
+    <div class="study-tool-card">
+
+      <h2>⏱️ Pomodoro Timer</h2>
+
+      <p>25 मिनट पढ़ाई, फिर 5 मिनट आराम।</p>
+
+      <div
+        id="studyPomodoroDisplay"
+        class="study-timer"
+      >25:00</div>
+
+      <button id="studyPomodoroStart">
+        Start
+      </button>
+
+      <button id="studyPomodoroPause">
+        Pause
+      </button>
+
+      <button id="studyPomodoroReset">
+        Reset
+      </button>
+
+      <p
+        id="studyPomodoroStatus"
+        class="study-status"
+        aria-live="polite"
+      >
+        पढ़ाई शुरू करने के लिए तैयार हो जाओ।
+      </p>
+
+    </div>
+
+    <!-- 3. STOPWATCH -->
+
+    <div class="study-tool-card">
+
+      <h2>⏳ Study Stopwatch</h2>
+
+      <p>अपना पढ़ाई का समय मापो।</p>
+
+      <div
+        id="studyStopwatchDisplay"
+        class="study-timer"
+      >00:00:00</div>
+
+      <button id="studyStopwatchStart">
+        Start
+      </button>
+
+      <button id="studyStopwatchPause">
+        Pause
+      </button>
+
+      <button id="studyStopwatchReset">
+        Reset
+      </button>
+
+      <p class="study-note">
+        रोज अपने फोकस और पढ़ाई के समय को बेहतर बनाओ।
+      </p>
+
+    </div>
+    <!-- 4. STUDY REMINDER -->
+
+    <div class="study-tool-card">
+
+      <h2>🔔 Study Reminder</h2>
+
+      <p>समय पर पढ़ाई शुरू करने के लिए रिमाइंडर लगाओ।</p>
+
+      <label for="studyReminderTime">
+        तारीख और समय:
+      </label>
+
+      <input
+        id="studyReminderTime"
+        type="datetime-local"
+      >
+
+      <label for="studyReminderMessage">
+        रिमाइंडर मैसेज:
+      </label>
+
+      <input
+        id="studyReminderMessage"
+        type="text"
+        placeholder="भाई, अब पढ़ने बैठ जा!"
+      >
+
+      <button id="studyReminderSet">
+        Reminder लगाओ
+      </button>
+
+      <button id="studyReminderClear">
+        Reminder हटाओ
+      </button>
+
+      <p
+        id="studyReminderStatus"
+        class="study-status"
+        aria-live="polite"
+      >
+        अभी कोई रिमाइंडर सेट नहीं है।
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- PART 2 JAVASCRIPT -->
+
+<script>
+(function () {
+  "use strict";
+
+  // स्क्रिप्ट दोबारा चलने से रोकें।
+  if (window.studyToolsPart2Initialized) {
+    return;
+  }
+
+  window.studyToolsPart2Initialized = true;
+
+  // =================================
+  // 1. STUDY CHAT DEMO
+  // =================================
+
+  const chatForm =
+    document.getElementById("studyChatForm");
+
+  const chatInput =
+    document.getElementById("studyChatInput");
+
+  const chatMessages =
+    document.getElementById("studyChatMessages");
+
+  function addChatMessage(message, type) {
+    const element = document.createElement("div");
+
+    element.className =
+      "study-chat-message " + type;
+
+    element.textContent = message;
+
+    chatMessages.appendChild(element);
+
+    chatMessages.scrollTop =
+      chatMessages.scrollHeight;
+  }
+
+  chatForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const message = chatInput.value.trim();
+
+    if (!message) return;
+
+    addChatMessage(message, "study-user-message");
+
+    chatInput.value = "";
+
+    const text = message.toLowerCase();
+
+    let reply =
+      "बढ़िया भाई! अब एक छोटा टास्क चुन और उसे पूरा कर। " +
+      "काम शुरू कर, बहाने बाद में! 💪";
+
+    if (
+      text.includes("मोटिवेशन") ||
+      text.includes("motivation") ||
+      text.includes("मन नहीं")
+    ) {
+      reply =
+        "सुन भाई! मन का इंतजार मत कर। " +
+        "किताब खोल और सिर्फ 10 मिनट पढ़ना शुरू कर। " +
+        "शुरुआत करेगा तभी आगे बढ़ेगा!";
+    } else if (
+      text.includes("थक") ||
+      text.includes("आराम") ||
+      text.includes("break")
+    ) {
+      reply =
+        "ठीक है भाई, थोड़ा आराम कर। " +
+        "फिर वापस आकर अपना लक्ष्य पूरा करना है!";
+    } else if (
+      text.includes("लक्ष्य") ||
+      text.includes("पढ़ाई") ||
+      text.includes("target")
+    ) {
+      reply =
+        "अच्छा भाई! लक्ष्य को छोटे टास्क में बाँट। " +
+        "पहला टास्क अभी शुरू कर और पूरा करके दिखा!";
+    }
+
+    addChatMessage(reply, "study-ai-message");
+  });
+
+  // =================================
+  // 2. POMODORO TIMER
+  // =================================
+
+  const pomodoroDisplay =
+    document.getElementById("studyPomodoroDisplay");
+
+  const pomodoroStatus =
+    document.getElementById("studyPomodoroStatus");
+
+  let pomodoroRemaining = 25 * 60;
+  let pomodoroEndTime = 0;
+  let pomodoroInterval = null;
+
+  function renderPomodoro() {
+    const minutes =
+      Math.floor(pomodoroRemaining / 60);
+
+    const seconds =
+      pomodoroRemaining % 60;
+
+    pomodoroDisplay.textContent =
+      String(minutes).padStart(2, "0") +
+      ":" +
+      String(seconds).padStart(2, "0");
+  }
+
+  function stopPomodoro() {
+    if (pomodoroInterval !== null) {
+      clearInterval(pomodoroInterval);
+      pomodoroInterval = null;
+    }
+  }
+
+  function updatePomodoro() {
+    pomodoroRemaining = Math.max(
+      0,
+      Math.ceil(
+        (pomodoroEndTime - Date.now()) / 1000
+      )
+    );
+    renderPomodoro();
+
+    if (pomodoroRemaining === 0) {
+      stopPomodoro();
+
+      pomodoroStatus.textContent =
+        "समय पूरा! अब 5 मिनट आराम करो।";
+
+      alert(
+        "भाई, 25 मिनट पूरे हो गए! अब छोटा ब्रेक ले।"
+      );
+    }
+  }
+
+  document
+    .getElementById("studyPomodoroStart")
+    .addEventListener("click", function () {
+      if (pomodoroInterval !== null) return;
+
+      if (pomodoroRemaining <= 0) {
+        pomodoroRemaining = 25 * 60;
+      }
+
+      pomodoroEndTime =
+        Date.now() + pomodoroRemaining * 1000;
+
+      pomodoroStatus.textContent =
+        "फोकस मोड चालू है! पढ़ाई पर ध्यान दे।";
+
+      pomodoroInterval =
+        setInterval(updatePomodoro, 250);
+
+      updatePomodoro();
+    });
+
+  document
+    .getElementById("studyPomodoroPause")
+    .addEventListener("click", function () {
+      if (pomodoroInterval === null) return;
+
+      updatePomodoro();
+      stopPomodoro();
+
+      if (pomodoroRemaining > 0) {
+        pomodoroStatus.textContent =
+          "टाइमर रोक दिया गया है।";
+      }
+    });
+
+  document
+    .getElementById("studyPomodoroReset")
+    .addEventListener("click", function () {
+      stopPomodoro();
+
+      pomodoroRemaining = 25 * 60;
+
+      renderPomodoro();
+
+      pomodoroStatus.textContent =
+        "टाइमर रीसेट हो गया।";
+    });
+
+  // =================================
+  // 3. STOPWATCH
+  // =================================
+
+  const stopwatchDisplay =
+    document.getElementById("studyStopwatchDisplay");
+
+  let stopwatchElapsed = 0;
+  let stopwatchStartedAt = 0;
+  let stopwatchInterval = null;
+
+  function getStopwatchElapsed() {
+    if (stopwatchInterval === null) {
+      return stopwatchElapsed;
+    }
+
+    return stopwatchElapsed +
+      (Date.now() - stopwatchStartedAt);
+  }
+
+  function renderStopwatch() {
+    const totalSeconds = Math.floor(
+      getStopwatchElapsed() / 1000
+    );
+
+    const hours =
+      Math.floor(totalSeconds / 3600);
+
+    const minutes =
+      Math.floor((totalSeconds % 3600) / 60);
+
+    const seconds =
+      totalSeconds % 60;
+
+    stopwatchDisplay.textContent =
+      String(hours).padStart(2, "0") +
+      ":" +
+      String(minutes).padStart(2, "0") +
+      ":" +
+      String(seconds).padStart(2, "0");
+  }
+
+  document
+    .getElementById("studyStopwatchStart")
+    .addEventListener("click", function () {
+      if (stopwatchInterval !== null) return;
+
+      stopwatchStartedAt = Date.now();
+
+      stopwatchInterval =
+        setInterval(renderStopwatch, 250);
+    });
+
+  document
+    .getElementById("studyStopwatchPause")
+    .addEventListener("click", function () {
+      if (stopwatchInterval === null) return;
+
+      stopwatchElapsed = getStopwatchElapsed();
+
+      clearInterval(stopwatchInterval);
+
+      stopwatchInterval = null;
+
+      renderStopwatch();
+    });
+
+  document
+    .getElementById("studyStopwatchReset")
+    .addEventListener("click", function () {
+      if (stopwatchInterval !== null) {
+        clearInterval(stopwatchInterval);
+      }
+
+      stopwatchInterval = null;
+      stopwatchElapsed = 0;
+      stopwatchStartedAt = 0;
+      renderStopwatch();
+    });
+
+  // =================================
+  // 4. STUDY REMINDER
+  // =================================
+
+  const reminderTime =
+    document.getElementById("studyReminderTime");
+
+  const reminderMessage =
+    document.getElementById("studyReminderMessage");
+
+  const reminderStatus =
+    document.getElementById("studyReminderStatus");
+
+  let reminderTimeout = null;
+
+  document
+    .getElementById("studyReminderSet")
+    .addEventListener("click", function () {
+      if (reminderTimeout !== null) {
+        clearTimeout(reminderTimeout);
+        reminderTimeout = null;
+      }
+
+      const selectedTime = reminderTime.value;
+
+      const message =
+        reminderMessage.value.trim() ||
+        "भाई, अब पढ़ाई करने बैठ जा! 💪";
+
+      if (!selectedTime) {
+        reminderStatus.textContent =
+          "पहले तारीख और समय चुनो।";
+        return;
+      }
+
+      const targetTime =
+        new Date(selectedTime).getTime();
+
+      const delay = targetTime - Date.now();
+
+      if (
+        !Number.isFinite(targetTime) ||
+        delay <= 0
+      ) {
+        reminderStatus.textContent =
+          "भविष्य का सही समय चुनो।";
+        return;
+      }
+
+      reminderTimeout = setTimeout(function () {
+        reminderStatus.textContent =
+          "रिमाइंडर पूरा हो गया!";
+
+        alert(message);
+
+        reminderTimeout = null;
+      }, delay);
+
+      reminderStatus.textContent =
+        "रिमाइंडर सेट है: " +
+        new Date(targetTime).toLocaleString("hi-IN");
+    });
+
+  document
+    .getElementById("studyReminderClear")
+    .addEventListener("click", function () {
+      if (reminderTimeout !== null) {
+        clearTimeout(reminderTimeout);
+        reminderTimeout = null;
+      }
+
+      reminderStatus.textContent =
+        "रिमाइंडर हटा दिया गया।";
+    });
+
+  renderPomodoro();
+  renderStopwatch();
+
+})();
+</script>
+<!-- ==========================================
+     STUDY SATHI AI - PART 3
+     BOOK UPLOAD + VIDEO LIBRARY + MOTIVATION
+========================================== -->
+
+<style>
+  .sathi-library {
+    color: #e2e8f0;
+    margin: 20px 0;
+    font-family: system-ui, sans-serif;
+  }
+
+  .sathi-library h2,
+  .sathi-library h3 {
+    color: #38bdf8;
+  }
+
+  .sathi-grid {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(260px, 1fr)
+    );
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .sathi-panel {
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 18px;
+    min-width: 0;
+  }
+
+  .sathi-panel p {
+    line-height: 1.6;
+  }
+
+  .sathi-library button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    margin: 5px 3px 5px 0;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .sathi-library button:hover {
+    background: #1d4ed8;
+  }
+
+  .sathi-library input,
+  .sathi-library textarea,
+  .sathi-library select {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+    padding: 11px;
+    border-radius: 8px;
+    border: 1px solid #475569;
+    background: #0f172a;
+    color: #f8fafc;
+  }
+
+  .sathi-library input[type="file"] {
+    font-size: 14px;
+  }
+
+  .sathi-book-text {
+    background: #0f172a;
+    border-radius: 10px;
+    padding: 14px;
+    min-height: 100px;
+    max-height: 350px;
+    overflow: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    line-height: 1.7;
+  }
+
+  .sathi-video {
+    display: block;
+    width: 100%;
+    max-height: 320px;
+    margin-top: 12px;
+    border-radius: 10px;
+    background: #020617;
+  }
+
+  .sathi-status {
+    color: #7dd3fc;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .sathi-motivation {
+    background: #172554;
+    border: 1px solid #1d4ed8;
+    padding: 16px;
+    border-radius: 12px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+
+  .sathi-chat-log {
+    height: 220px;
+    overflow-y: auto;
+    background: #0f172a;
+    padding: 12px;
+    border-radius: 10px;
+    margin: 12px 0;
+  }
+
+  .sathi-chat-message {
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+
+  .sathi-chat-user {
+    background: #1e40af;
+  }
+
+  .sathi-chat-ai {
+    background: #1e293b;
+  }
+
+  .sathi-danger {
+    background: #991b1b !important;
+  }
+</style>
+
+<section id="sathiLibrary" class="sathi-library">
+
+  <div class="sathi-panel">
+    <h2>📚 Study साथी AI — मेरी स्टडी लाइब्रेरी</h2>
+
+    <p>
+      भाई, अपनी किताबें और मोटिवेशनल वीडियो यहाँ जोड़ो।
+      जो सीखोगे, उसे अपनी पढ़ाई में इस्तेमाल करो।
+    </p>
+
+    <p class="sathi-status">
+      किताब और वीडियो की फाइलें इसी ब्राउज़र में
+      स्थानीय रूप से प्रोसेस होंगी।
+    </p>
+  </div>
+
+  <div class="sathi-grid">
+
+    <!-- =================================
+         BOOK UPLOAD SECTION
+    ================================== -->
+
+    <div class="sathi-panel">
+      <h3>📖 1. मोटिवेशनल बुक अपलोड</h3>
+
+      <p>
+        TXT, TXT-आधारित पढ़ने योग्य सामग्री या टेक्स्ट
+        वाली PDF फ़ाइल चुनो।
+      </p>
+
+      <label for="sathiBookFile">
+        अपनी किताब चुनो
+      </label>
+
+      <input
+        type="file"
+        id="sathiBookFile"
+        accept=".txt,.md,.pdf,text/plain,text/markdown,application/pdf"
+      >
+
+      <button type="button" id="sathiReadBook">
+        किताब खोलो
+      </button>
+
+      <button type="button" id="sathiClearBook">
+        किताब हटाओ
+      </button>
+
+      <p
+        id="sathiBookStatus"
+        class="sathi-status"
+        aria-live="polite"
+      >
+        अभी कोई किताब नहीं चुनी गई।
+      </p>
+
+      <h3>किताब का टेक्स्ट</h3>
+
+      <div
+        id="sathiBookContent"
+        class="sathi-book-text"
+        tabindex="0"
+      >तुम्हारी किताब का टेक्स्ट यहाँ दिखाई देगा।</div>
+
+      <button type="button" id="sathiBookMotivation">
+        किताब से मोटिवेशन लो
+      </button>
+    </div>
+
+    <!-- =================================
+         VIDEO UPLOAD SECTION
+    ================================== -->
+
+    <div class="sathi-panel">
+      <h3>🎬 2. मोटिवेशनल वीडियो</h3>
+
+      <p>
+        अपने फ़ोन या कंप्यूटर से वीडियो चुनो और
+        पढ़ाई के लिए मोटिवेशन हासिल करो।
+      </p>
+
+      <label for="sathiVideoFile">
+        वीडियो चुनो
+      </label>
+
+      <input
+        type="file"
+        id="sathiVideoFile"
+        accept="video/*"
+      >
+
+      <video
+        id="sathiVideoPlayer"
+        class="sathi-video"
+        controls
+        playsinline
+        preload="metadata"
+      ></video>
+
+      <p
+        id="sathiVideoStatus"
+        class="sathi-status"
+        aria-live="polite"
+      >
+        अभी कोई वीडियो नहीं चुना गया।
+      </p>
+
+      <button type="button" id="sathiClearVideo">
+        वीडियो हटाओ
+      </button>
+
+      <button type="button" id="sathiVideoMotivation">
+        वीडियो देखने के बाद मोटिवेशन
+      </button>
+
+      <p class="sathi-status">
+        नोट: वीडियो से अपने आप जानकारी निकालने या
+        उसकी आवाज़ समझने के लिए अतिरिक्त AI प्रोसेसिंग
+        की आवश्यकता होगी।
+      </p>
+    </div>
+
+    <!-- =================================
+         STRICT MOTIVATION SECTION
+    ================================== -->
+
+    <div class="sathi-panel">
+      <h3>🔥 3. Strict Motivation Mode</h3>
+
+      <p>
+        भाई वाली सीधी बात — बिना बहाने, लेकिन
+        सम्मान के साथ।
+      </p>
+
+      <label for="sathiStudyGoal">
+        आज का पढ़ाई का लक्ष्य
+      </label>
+
+      <input
+        id="sathiStudyGoal"
+        type="text"
+        placeholder="जैसे: गणित के 20 सवाल"
+      >
+
+      <label for="sathiStudyMood">
+        अभी तुम्हारा मूड कैसा है?
+      </label>
+
+      <select id="sathiStudyMood">
+        <option value="lazy">आलस आ रहा है</option>
+        <option value="distracted">ध्यान भटक रहा है</option>
+        <option value="tired">थकान महसूस हो रही है</option>
+        <option value="confident">मैं तैयार हूँ</option>
+        <option value="worried">पढ़ाई को लेकर चिंता है</option>
+      </select>
+
+      <button type="button" id="sathiGetMotivation">
+        मुझे मोटिवेट करो 💪
+      </button>
+
+      <div
+        id="sathiMotivationOutput"
+        class="sathi-motivation"
+        aria-live="polite"
+      >भाई, छोटा लक्ष्य तय कर और अभी शुरुआत कर।
+        मेहनत को रोज़ की आदत बना!</div>
+    </div>
+
+    <!-- =================================
+         STUDY CHAT SECTION
+    ================================== -->
+
+    <div class="sathi-panel">
+      <h3>🤖 Study साथी — बातचीत</h3>
+
+      <div
+        id="sathiLibraryChatLog"
+        class="sathi-chat-log"
+        aria-live="polite"
+      >
+        <div class="sathi-chat-message sathi-chat-ai">
+          भाई, किताब पढ़ने के बाद क्या सीखा?
+          अपना सवाल लिखो, हम उस पर चर्चा करेंगे।
+        </div>
+      </div>
+
+      <form id="sathiLibraryChatForm">
+        <label for="sathiLibraryChatInput">
+          अपना सवाल लिखो
+        </label>
+
+        <textarea
+          id="sathiLibraryChatInput"
+          rows="3"
+          maxlength="2000"
+          placeholder="मैंने किताब में सीखा..."
+          required
+        ></textarea>
+
+        <button type="submit">
+          मैसेज भेजो
+        </button>
+      </form>
+
+      <p class="sathi-status">
+        यह डेमो चैट है। असली AI उत्तरों के लिए
+        सुरक्षित सर्वर और AI API जोड़नी होगी।
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  "use strict";
+
+  // दोबारा इनिशियलाइज़ होने से बचाएँ।
+  if (window.sathiLibraryPart3Ready) return;
+  window.sathiLibraryPart3Ready = true;
+
+  const byId = (id) => document.getElementById(id);
+
+  // =====================================
+  // 1. BOOK UPLOAD AND READING
+  // =====================================
+
+  const bookInput = byId("sathiBookFile");
+  const bookStatus = byId("sathiBookStatus");
+  const bookContent = byId("sathiBookContent");
+
+  let currentBookText = "";
+
+  byId("sathiReadBook").addEventListener("click", async () => {
+    const file = bookInput.files[0];
+
+    if (!file) {
+      bookStatus.textContent = "पहले किताब की फ़ाइल चुनो।";
+      return;
+    }
+
+    const maxSize = 10 * 1024 * 1024;
+
+    if (file.size > maxSize) {
+      bookStatus.textContent =
+        "फ़ाइल 10 MB से छोटी होनी चाहिए।";
+      return;
+    }
+
+    const isPdf =
+      file.type === "application/pdf" ||
+      file.name.toLowerCase().endsWith(".pdf");
+
+    const isText =
+      file.type.startsWith("text/") ||
+      /\.(txt|md)$/i.test(file.name);
+
+    if (!isPdf && !isText) {
+      bookStatus.textContent =
+        "कृपया TXT, MD या PDF फ़ाइल चुनो।";
+      return;
+    }
+
+    bookStatus.textContent = "किताब पढ़ी जा रही है...";
+
+    try {
+      if (isPdf) {
+        bookStatus.textContent =
+          "PDF चुनी गई है। PDF का टेक्स्ट निकालने के लिए " +
+          "PDF.js जैसी लाइब्रेरी जोड़नी होगी। " +
+          "अभी TXT या MD फ़ाइल अपलोड करके पढ़ सकते हो।";
+
+        bookContent.textContent =
+          "इस डेमो में PDF टेक्स्ट एक्सट्रैक्शन उपलब्ध नहीं है।";
+
+        currentBookText = "";
+        return;
+      }
+
+      const text = await file.text();
+
+      if (!text.trim()) {
+        bookStatus.textContent =
+          "इस फ़ाइल में पढ़ने योग्य टेक्स्ट नहीं मिला।";
+        return;
+      }
+
+      currentBookText = text;
+
+      bookContent.textContent = text;
+
+      bookStatus.textContent =
+        "किताब लोड हो गई: " + file.name;
+
+    } catch (error) {
+      bookStatus.textContent =
+        "फ़ाइल पढ़ने में समस्या आई। दूसरी फ़ाइल आज़माओ।";
+    }
+  });
+
+  byId("sathiClearBook").addEventListener("click", () => {
+    bookInput.value = "";
+    currentBookText = "";
+
+    bookContent.textContent =
+      "तुम्हारी किताब का टेक्स्ट यहाँ दिखाई देगा।";
+
+    bookStatus.textContent = "किताब हटा दी गई।";
+  });
+
+  // =====================================
+  // 2. LOCAL VIDEO PLAYER
+  // =====================================
+
+  const videoInput = byId("sathiVideoFile");
+  const videoPlayer = byId("sathiVideoPlayer");
+  const videoStatus = byId("sathiVideoStatus");
+
+  let currentVideoUrl = null;
+
+  videoInput.addEventListener("change", () => {
+    const file = videoInput.files[0];
+
+    if (currentVideoUrl) {
+      URL.revokeObjectURL(currentVideoUrl);
+      currentVideoUrl = null;
+    }
+
+    videoPlayer.pause();
+    videoPlayer.removeAttribute("src");
+    videoPlayer.load();
+
+    if (!file) {
+      videoStatus.textContent =
+        "अभी कोई वीडियो नहीं चुना गया।";
+      return;
+    }
+
+    if (!file.type.startsWith("video/")) {
+      videoInput.value = "";
+
+      videoStatus.textContent =
+        "कृपया वीडियो फ़ाइल चुनो।";
+      return;
+    }
+
+    currentVideoUrl = URL.createObjectURL(file);
+
+    videoPlayer.src = currentVideoUrl;
+
+    videoStatus.textContent =
+      "वीडियो तैयार है: " + file.name;
+
+    videoPlayer.load();
+  });
+
+  byId("sathiClearVideo").addEventListener("click", () => {
+    videoPlayer.pause();
+    videoPlayer.removeAttribute("src");
+    videoPlayer.load();
+
+    if (currentVideoUrl) {
+      URL.revokeObjectURL(currentVideoUrl);
+      currentVideoUrl = null;
+    }
+
+    videoInput.value = "";
+
+    videoStatus.textContent =
+      "वीडियो हटा दिया गया।";
+  });
+
+  // =====================================
+  // 3. MOTIVATION GENERATOR
+  // =====================================
+
+  function createMotivation(goal, mood) {
+    const target = goal ||
+      "25 मिनट बिना ध्यान भटकाए पढ़ाई करना";
+
+    const messages = {
+      lazy:
+        "भाई, आलस आने का मतलब यह नहीं कि तुम हार गए। " +
+        "किताब खोलो, टाइमर लगाओ और सिर्फ 5 मिनट शुरू करो। " +
+        "शुरुआत तुम्हारे हाथ में है।",
+
+      distracted:
+        "फोन को साइड में रखो। एक समय में एक ही काम। " +
+        "अगले 25 मिनट सिर्फ अपने लक्ष्य को दो।",
+
+      tired:
+        "भाई, अगर सच में थक गए हो तो थोड़ा आराम और पानी लो। " +
+        "फिर अपनी ऊर्जा के हिसाब से छोटा टास्क शुरू करो।",
+
+      confident:
+        "यही जोश चाहिए भाई! अब जोश को काम में बदलो। " +
+        "लक्ष्य पूरा करो और फिर अगला कदम तय करो।",
+
+      worried:
+        "चिंता को छोटे कदमों में बाँटो। पूरी किताब एक साथ " +
+        "नहीं पढ़नी। एक पेज या एक सवाल से शुरुआत करो।"
+    };
+
+    return (
+      "सुन भाई! 💪\n\n" +
+      (messages[mood] || messages.lazy) +
+      "\n\nआज का लक्ष्य: " + target +
+      "\n\nअब 25 मिनट का टाइमर लगाओ और शुरुआत करो!"
+    );
+  }
+
+  byId("sathiGetMotivation").addEventListener("click", () => {
+    const goal = byId("sathiStudyGoal").value.trim();
+    const mood = byId("sathiStudyMood").value;
+
+    byId("sathiMotivationOutput").textContent =
+      createMotivation(goal, mood);
+  });
+
+  // किताब के आधार पर डेमो मोटिवेशन।
+  byId("sathiBookMotivation").addEventListener("click", () => {
+    const output = byId("sathiMotivationOutput");
+
+    if (!currentBookText) {
+      output.textContent =
+        "भाई, पहले TXT या MD फ़ाइल अपलोड करो। " +
+        "उसके बाद हम किताब के टेक्स्ट पर चर्चा कर सकते हैं।";
+      return;
+    }
+
+    const excerpt = currentBookText
+      .trim()
+      .slice(0, 700);
+
+    output.textContent =
+      "📖 तुम्हारी किताब से पढ़ने के लिए अंश:\n\n" +
+      excerpt +
+      "\n\nभाई, इस अंश से एक सीख चुनो और आज उसे " +
+      "अपने किसी छोटे काम में लागू करो।";
+  });
+
+  byId("sathiVideoMotivation").addEventListener("click", () => {
+    const output = byId("sathiMotivationOutput");
+
+    if (!videoInput.files[0]) {
+      output.textContent =
+        "पहले एक मोटिवेशनल वीडियो अपलोड करो।";
+      return;
+    }
+
+    output.textContent =
+      "भाई, वीडियो को ध्यान से देखो। उसमें बताई गई " +
+      "एक उपयोगी बात लिखो और आज अपनी पढ़ाई में " +
+      "उसे लागू करो।\n\n" +
+      "ध्यान रहे: अभी ऐप वीडियो की आवाज़ या सामग्री " +
+      "को अपने आप नहीं समझता। उसके लिए AI प्रोसेसिंग चाहिए।";
+  });
+
+  // =====================================
+  // 4. STUDY CHAT DEMO
+  // =====================================
+
+  const chatForm = byId("sathiLibraryChatForm");
+  const chatInput = byId("sathiLibraryChatInput");
+  const chatLog = byId("sathiLibraryChatLog");
+
+  function addMessage(text, type) {
+    const item = document.createElement("div");
+
+    item.className =
+      "sathi-chat-message " + type;
+
+    item.textContent = text;
+
+    chatLog.appendChild(item);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  chatForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const message = chatInput.value.trim();
+
+    if (!message) return;
+
+    addMessage(message, "sathi-chat-user");
+
+    chatInput.value = "";
+
+    let reply =
+      "भाई, अपनी बात को एक छोटे लक्ष्य में बदलो। " +
+      "अब बताओ, अगला कदम क्या उठाओगे?";
+
+    if (currentBookText) {
+      const firstPart = currentBookText
+        .trim()
+        .slice(0, 300);
+
+      reply =
+        "तुम्हारी अपलोड की गई किताब का एक शुरुआती अंश:\n\n" +
+        firstPart +
+        "\n\nयह अभी साधारण डेमो है, असली AI विश्लेषण नहीं। " +
+        "किताब के सवालों के सही जवाब देने के लिए AI API चाहिए।";
+    }
+
+    addMessage(reply, "sathi-chat-ai");
+  });
+
+})();
+        </script>
